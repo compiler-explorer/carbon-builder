@@ -23,7 +23,7 @@ RUN useradd -m -s /bin/bash build && \
     usermod -aG sudo build &&  \
     mkdir -p /home/build/
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN curl https://github.com/bazelbuild/bazelisk/releases/download/v1.12.0/bazelisk-linux-arm64 -o /usr/local/bin/bazel && chmod +x /usr/local/bin/bazel
+RUN curl -sL https://github.com/bazelbuild/bazelisk/releases/download/v1.12.0/bazelisk-linux-amd64 -o /usr/local/bin/bazel && chmod +x /usr/local/bin/bazel
 
 USER build
 
@@ -33,4 +33,4 @@ ENV PATH="/home/linuxbrew/.linuxbrew/bin:${PATH}"
 RUN brew install --force-bottle --only-dependencies llvm
 RUN brew install --force-bottle --force --verbose llvm
 
-WORKDIR /build
+WORKDIR /home/build
