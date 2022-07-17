@@ -7,7 +7,7 @@ VERSION=$1
 if echo "${VERSION}" | grep 'trunk'; then
     VERSION=trunk-$(date +%Y%m%d)
     URL=https://github.com/carbon-language/carbon-lang.git
-    BRANCH=main
+    BRANCH=trunk
 else
     echo "Not yet supported"
     exit 1

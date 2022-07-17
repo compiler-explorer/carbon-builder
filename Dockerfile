@@ -9,10 +9,13 @@ RUN apt update -y -q && apt upgrade -y -q && apt upgrade -y -q && apt install -y
     g++ \
     gcc \
     git \
+    libunwind-dev \
     make \
+    python3 \
     sudo \
     unzip \
-    xz-utils && \
+    xz-utils \
+    zlib1g-dev && \
     cd /tmp && \
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
@@ -34,3 +37,4 @@ RUN brew install --force-bottle --only-dependencies llvm
 RUN brew install --force-bottle --force --verbose llvm
 
 WORKDIR /home/build
+COPY build/ .
