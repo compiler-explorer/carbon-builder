@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update -y -q && apt upgrade -y -q && apt upgrade -y -q && apt install -y -q \
