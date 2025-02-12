@@ -27,11 +27,8 @@ if [[ "${REVISION}" == "${LAST_REVISION}" ]]; then
 fi
 
 STAGING_DIR=$(pwd)/staging
-BUILD_DIR=$(pwd)/build
-rm -rf ${STAGING_DIR} ${BUILD_DIR}
+rm -rf ${STAGING_DIR}
 
-mkdir -p ${BUILD_DIR}
-pushd ${BUILD_DIR}
 git clone -q --depth 1 --single-branch -b "${BRANCH}" "${URL}" "carbon-${VERSION}"
 
 pushd "carbon-${VERSION}"
