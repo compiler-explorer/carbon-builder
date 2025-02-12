@@ -2,7 +2,6 @@
 
 set -ex
 
-ROOT=$(pwd)
 VERSION=$1
 if echo "${VERSION}" | grep 'trunk'; then
     VERSION=trunk-$(date +%Y%m%d)
@@ -14,34 +13,25 @@ else
 fi
 
 FULLNAME=carbon-${VERSION}
-OUTPUT=${ROOT}/${FULLNAME}.tar.xz
-S3OUTPUT=""
-if echo "$2" | grep s3://; then
-    S3OUTPUT=$2
-else
-    if [[ -d "${2}" ]]; then
-        OUTPUT=$2/${FULLNAME}.tar.xz
-    else
-        OUTPUT=${2-$OUTPUT}
-    fi
-fi
+OUTPUT=$2/${FULLNAME}.tar.xz
 
-CARBON_REVISION=$(git ls-remote --heads ${URL} "refs/heads/${BRANCH}" | cut -f 1)
-REVISION="carbon-${CARBON_REVISION}"
+REVISION="carbon-${VERSION}"
 LAST_REVISION="${3}"
-
-PKGVERSION="Compiler-Explorer-Build-${REVISION}"
 
 echo "ce-build-revision:${REVISION}"
 echo "ce-build-output:${OUTPUT}"
 
 if [[ "${REVISION}" == "${LAST_REVISION}" ]]; then
-    echo "ce-build-status:SKIPPED"
-    exit
+   echo "ce-build-status:SKIPPED"
+   exit
 fi
 
 STAGING_DIR=$(pwd)/staging
+BUILD_DIR=$(pwd)/build
+rm -rf ${STAGING_DIR} ${BUILD_DIR}
 
+mkdir -p ${BUILD_DIR}
+pushd ${BUILD_DIR}
 git clone -q --depth 1 --single-branch -b "${BRANCH}" "${URL}" "carbon-${VERSION}"
 
 pushd "carbon-${VERSION}"
@@ -51,9 +41,5 @@ popd
 
 export XZ_DEFAULTS="-T 0"
 tar Jcf "${OUTPUT}" --transform "s,^./,./carbon-${VERSION}/," -C "${STAGING_DIR}" .
-
-if [[ -n "${S3OUTPUT}" ]]; then
-    aws s3 cp --storage-class REDUCED_REDUNDANCY "${OUTPUT}" "${S3OUTPUT}"
-fi
 
 echo "ce-build-status:OK"
