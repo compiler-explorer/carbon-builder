@@ -12,10 +12,10 @@ else
     exit 1
 fi
 
-FULLNAME=carbon-${VERSION}
+FULLNAME=carbon-explorer-${VERSION}
 OUTPUT=$2/${FULLNAME}.tar.xz
 
-REVISION="carbon-${VERSION}"
+REVISION="carbon-explorer-${VERSION}"
 LAST_REVISION="${3}"
 
 echo "ce-build-revision:${REVISION}"
@@ -37,6 +37,6 @@ bazel run -c opt //installers/local:install "--//installers/local:install_path=$
 popd
 
 export XZ_DEFAULTS="-T 0"
-tar Jcf "${OUTPUT}" --transform "s,^./,./carbon-${VERSION}/," -C "${STAGING_DIR}" .
+tar Jcf "${OUTPUT}" --transform "s,^./,./carbon-explorer-${VERSION}/," -C "${STAGING_DIR}" .
 
 echo "ce-build-status:OK"
